@@ -29,7 +29,8 @@ public class EmployeeCLI {
                 System.out.println("2. 특정 직원 조회");
                 System.out.println("3. 직원 정보 삽입");
                 System.out.println("4. 직원 정보 삭제");
-                System.out.println("5. 종료");
+                System.out.println("5. 직원 정보 수정");
+                System.out.println("6. 종료");
                 System.out.print("선택: ");
 
                 int choice = scanner.nextInt();
@@ -55,6 +56,9 @@ public class EmployeeCLI {
                         deleteEmployeeById(statement, deleteEmployeeId);
                         break;
                     case 5:
+                        updateEmployee(statement, scanner);
+                        break;
+                    case 6:
                         exit = true;
                         break;
                     default:
@@ -84,8 +88,7 @@ public class EmployeeCLI {
             double comm = resultSet.getDouble("comm");
             int deptno = resultSet.getInt("deptno");
 
-           System.out.printf("직원 ID: %-7d 이름: %-15s 직무: %-15s 상사: %-7d 입사일: %-15s 급여: %-10.2f 보너스: %-10.2f 부서번호: %-7d%n", empId, empName, job, mgr, hiredate, empSalary, comm, deptno);
-
+            System.out.printf("직원 ID: %-7d 이름: %-15s 직무: %-15s 상사: %-7d 입사일: %-15s 급여: %-10.2f 보너스: %-10.2f 부서번호: %-7d%n", empId, empName, job, mgr, hiredate, empSalary, comm, deptno);
         }
 
         resultSet.close();
@@ -153,6 +156,39 @@ public class EmployeeCLI {
         int rowsAffected = statement.executeUpdate(sql);
         if (rowsAffected > 0) {
             System.out.println("직원 삭제가 완료되었습니다.");
+        } else {
+            System.out.println("해당 ID의 직원이 존재하지 않습니다.");
+        }
+    }
+
+    private static void updateEmployee(Statement statement, Scanner scanner) throws SQLException {
+        System.out.print("수정할 직원의 empno: ");
+        int empno = scanner.nextInt();
+        scanner.nextLine();
+        System.out.print("수정할 이름: ");
+        String ename = scanner.nextLine();
+        System.out.print("수정할 직무: ");
+        String job = scanner.nextLine();
+        System.out.print("수정할 상사의 empno: ");
+        int mgr = scanner.nextInt();
+        scanner.nextLine();
+        System.out.print("수정할 입사일: ");
+        String hiredate = scanner.nextLine();
+        System.out.print("수정할 급여: ");
+        double sal = scanner.nextDouble();
+        scanner.nextLine();
+        System.out.print("수정할 보너스: ");
+        double comm = scanner.nextDouble();
+        scanner.nextLine();
+        System.out.print("수정할 부서번호: ");
+        int deptno = scanner.nextInt();
+        scanner.nextLine();
+
+        String sql = String.format("UPDATE emp SET ename='%s', job='%s', mgr=%d, hiredate='%s', sal=%.2f, comm=%.2f, deptno=%d WHERE empno=%d",
+                ename, job, mgr, hiredate, sal, comm, deptno, empno);
+        int rowsAffected = statement.executeUpdate(sql);
+        if (rowsAffected > 0) {
+            System.out.println("직원 정보 수정이 완료되었습니다.");
         } else {
             System.out.println("해당 ID의 직원이 존재하지 않습니다.");
         }
