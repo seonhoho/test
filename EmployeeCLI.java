@@ -84,8 +84,8 @@ public class EmployeeCLI {
             double comm = resultSet.getDouble("comm");
             int deptno = resultSet.getInt("deptno");
 
-            System.out.println("직원 ID: " + empId + ", 이름: " + empName + ", 직무: " + job + ", 상사: " + mgr +
-                    ", 입사일: " + hiredate + ", 급여: " + empSalary + ", 보너스: " + comm + ", 부서번호: " + deptno);
+           System.out.printf("직원 ID: %-7d 이름: %-15s 직무: %-15s 상사: %-7d 입사일: %-15s 급여: %-10.2f 보너스: %-10.2f 부서번호: %-7d%n", empId, empName, job, mgr, hiredate, empSalary, comm, deptno);
+
         }
 
         resultSet.close();
